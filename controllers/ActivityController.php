@@ -12,6 +12,7 @@ use app\base\BaseController;
 use app\components\ActivityComponent;
 use app\controllers\actions\ActivityCreateAction;
 use app\controllers\actions\ActivityEditAction;
+use app\controllers\actions\ActivityIndexAction;
 use yii\web\HttpException;
 
 //use app\models\Activity;
@@ -27,6 +28,9 @@ class ActivityController extends BaseController
             'edit' => [
                 'class' => ActivityEditAction::class
             ],
+            'index'=>[
+                'class'=>ActivityIndexAction::class
+            ]
         ];
     }
 

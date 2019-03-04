@@ -17,6 +17,10 @@ $config = [
         '@npm' => '@vendor/npm-asset',
     ],
     'components' => [
+        'formatter'=>[
+            'class'=>'\yii\i18n\Formatter',
+            'dateFormat' => 'php:d.m.Y'
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'cwdFC8Xaaw1jp3e3H77Mrt1JdCBzbRqz',

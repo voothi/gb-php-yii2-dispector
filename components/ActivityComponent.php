@@ -3,6 +3,7 @@
 namespace app\components;
 
 use app\models\Activity;
+use app\models\ActivitySearch;
 use yii\base\Component;
 use yii\web\UploadedFile;
 
@@ -80,6 +81,16 @@ class ActivityComponent extends Component
     private function getPathSaveFile()
     {
         return \Yii::getAlias('@app/web/images/');
+    }
+
+    /**
+     * @param $params
+     * @return \yii\data\ActiveDataProvider
+     */
+    public function getSearchProvider($params){
+        $model=new ActivitySearch();
+
+        return $model->getDataProvider();
     }
 
     // создание компонента через DAO

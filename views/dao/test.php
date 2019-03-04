@@ -2,11 +2,7 @@
 ?>
 
 <div class="row">
-    <div class="col-md-6">
-        <pre>
-            <?php print_r($users); ?>
-        </pre>
-    </div>
+    <?=\app\widgets\ViewUsersListWidget\ViewUsersListWidget::widget(['users' => $users])?>
     <div class="col-md-6">
         <pre>
             <?php print_r($activityUser);?>

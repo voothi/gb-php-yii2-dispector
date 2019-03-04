@@ -1,6 +1,6 @@
 <?php
 
-use yii\Helpers\Html;
+use yii\helpers\Html;
 $date = $activity->dateAct;
 // преобразовать дату из БД в дату по заданному формату
 $correctDate = date(\Yii::$app->params['date_format']['date_format_for_user'], strtotime($date));
