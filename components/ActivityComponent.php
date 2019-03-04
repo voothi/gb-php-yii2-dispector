@@ -23,6 +23,8 @@ class ActivityComponent extends Component
         if ($params && is_array($params)) {
             $model->load($params);
         }
+
+        $model->trigger($model::EVENT_MY_EVENT);
         return $model;
     }
 

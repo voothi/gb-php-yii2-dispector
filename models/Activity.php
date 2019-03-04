@@ -4,6 +4,7 @@ namespace app\models;
 
 //use app\models\rules\NotAdminRule;
 use app\behaviors\GetDateFunctionFormatBehavior;
+use app\behaviors\LogMyBehavior;
 use yii\base\Model;
 use yii\web\UploadedFile;
 use app\models\rules\CorrectTimeRule;
@@ -19,20 +20,23 @@ class Activity extends ActivityBase
 
 {
 
+    const EVENT_MY_EVENT='my_event';
 
-//    public function behaviors()
-//    {
-//        return [
-//            [
-//                'class'=>GetDateFunctionFormatBehavior::class,
-//                'attribute_name' => 'dateAct'
-//            ],
-//            [
-//                'class'=>GetDateFunctionFormatBehavior::class,
-//                'attribute_name' => 'dateAct'
-//            ],
-//        ];
-//    }
+
+    public function behaviors()
+    {
+        return [
+            [
+                'class'=>GetDateFunctionFormatBehavior::class,
+                'attribute_name' => 'dateAct'
+            ],
+            [
+                'class'=>GetDateFunctionFormatBehavior::class,
+                'attribute_name' => 'dateAct'
+            ],
+            LogMyBehavior::class
+        ];
+    }
 //    public $images; // картинки для события
 //    public $imagesNewNames; // массив картинок с новыми именами (после сохранения)
 
