@@ -3,17 +3,36 @@
 namespace app\models;
 
 //use app\models\rules\NotAdminRule;
+use app\behaviors\GetDateFunctionFormatBehavior;
 use yii\base\Model;
 use yii\web\UploadedFile;
 use app\models\rules\CorrectTimeRule;
 use app\models\rules\CorrectTimeStart;
 use app\models\rules\DateTodayPlusRule;
 
-
+/**
+ * Class Activity
+ * @package app\models
+ * @mixin GetDateFunctionFormatBehavior
+ */
 class Activity extends ActivityBase
 
 {
 
+
+//    public function behaviors()
+//    {
+//        return [
+//            [
+//                'class'=>GetDateFunctionFormatBehavior::class,
+//                'attribute_name' => 'dateAct'
+//            ],
+//            [
+//                'class'=>GetDateFunctionFormatBehavior::class,
+//                'attribute_name' => 'dateAct'
+//            ],
+//        ];
+//    }
 //    public $images; // картинки для события
 //    public $imagesNewNames; // массив картинок с новыми именами (после сохранения)
 

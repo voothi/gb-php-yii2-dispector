@@ -48,6 +48,18 @@
                         return $model->user->email;
                     }
                 ],
+                [
+                        'label' => 'Дата создания',
+                    'attribute' => 'date_created',
+                    'value' => function($model){
+                        /** @var $model \app\models\Activity */
+                        $model->attachBehavior('getDateB',[
+                                'class'=>\app\behaviors\GetDateFunctionFormatBehavior::class,
+                            'attribute_name' => 'dateAct']);
+//                        $model->detachBehavior('getDateB');
+                        return $model->getDate();
+                    }
+                ]
             ]
         ]);?>
     </div>

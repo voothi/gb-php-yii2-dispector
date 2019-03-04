@@ -20,6 +20,8 @@ class ActivityIndexAction extends Action
 
         $dataprovider=$comp->getSearchProvider(\Yii::$app->request->queryParams);
 
+//        \Yii::$app->request->logMeHere();
+        \Yii::$app->logMeHere();
         return $this->controller->render('index',['provider'=>$dataprovider]);
 
     }
