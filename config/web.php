@@ -17,6 +17,11 @@ $config = [
         '@npm' => '@vendor/npm-asset',
     ],
     'as lgo'=>\app\behaviors\LogMyBehavior::class,
+    'modules' => [
+        'test' => [
+            'class' => 'app\modules\test\Module',
+        ],
+    ],
     'components' => [
         'formatter'=>[
             'class'=>'\yii\i18n\Formatter',
