@@ -23,9 +23,27 @@ $config = [
         'authManager' => [
             'class' => 'yii\rbac\DbManager'
         ],
+        'formatter'=>[
+            'class'=>'\yii\i18n\Formatter',
+            'dateFormat' => 'php:d.m.Y',
+            'datetimeFormat'=>'php:d.m.Y H:i'
+        ],
         'activity' => [
             'class' => \app\components\ActivityComponent::class,
             'activity_class' => '\app\models\Activity',
+        ],
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'useFileTransport' => false,
+            'enableSwiftMailerLogging' => true,
+            'transport' => [
+                'class'=>'Swift_SmtpTransport',
+                'host'=>'smtp.yandex.ru',
+                'username' => 'geekbrains@onedeveloper.ru',
+                'password' => 'qazWSX',
+                'port' => '587',
+                'encryption' => 'tls'
+            ]
         ],
         'log' => [
             'targets' => [

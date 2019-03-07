@@ -95,6 +95,17 @@ class ActivityComponent extends Component
         return $model->getDataProvider();
     }
 
+    /**
+     * Получение списка сегодняшних событий
+     * @return Activity[]
+     */
+    public function getActivityToday(){
+        $activities=Activity::find()->andWhere('timeStart>=:date',[':date' => date('Y-m-d')])
+            ->andWhere(['use_notification'=>1])->all();
+
+        return $activities;
+    }
+
     // создание компонента через DAO
 //    public function createActivity(&$model)
 //    {
