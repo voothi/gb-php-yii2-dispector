@@ -5,9 +5,20 @@ namespace app\controllers;
 
 use app\base\BaseController;
 use app\components\DaoComponent;
+use yii\filters\PageCache;
 
 class DaoController extends BaseController
 {
+
+    public function behaviors()
+    {
+        return [
+            ['class'=>PageCache::class,
+                'only' => ['test'],
+                'duration' => 10]
+        ];
+    }
+
     public function actionTest(){
         /** @var DaoComponent $dao */
         $dao = \Yii::$app->dao;
@@ -29,5 +40,19 @@ class DaoController extends BaseController
                 'allActivityUser'=>$allActivityUser,
                 'activityReader'=>$activityReader,
                 ]);
+    }
+
+    public function actionCache(){
+//        \Yii::$app->cache->set('key1','value1');
+//
+//        \Yii::$app->cache->delete('key1');
+        \Yii::$app->cache->flush();
+        $value=\Yii::$app->cache->getOrSet('key1',function (){
+            return 'value3';
+        });
+
+//        \Yii::$app->cache->flush();
+
+        echo $value;
     }
 }

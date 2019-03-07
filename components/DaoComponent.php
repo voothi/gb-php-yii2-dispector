@@ -4,6 +4,8 @@ namespace app\components;
 
 
 use yii\base\Component;
+use yii\caching\DbDependency;
+use yii\caching\TagDependency;
 use yii\db\conditions\InCondition;
 use yii\db\Query;
 use yii\log\Logger;
@@ -22,27 +24,31 @@ class DaoComponent extends Component
     public function getAllUsers()
     {
         $sql = 'select * from users';
-        return $this->getDb()->createCommand($sql)->queryAll();
+        return $this->getDb()->createCommand($sql)->cache()->queryAll();
     }
 
     public function getActivityUser($id = 1)
     {
         $sql = 'select * from activity where user_id=:user';
-        return $this->getDb()->createCommand($sql, ['user' => (int)$id])->queryAll();
+        return $this->getDb()->createCommand($sql, ['user' => (int)$id])->cache(15)->queryAll();
     }
 
     // queryOne возвращает только первую запись
     public function getFirstActivity()
     {
         $sql = 'select * from activity limit 3';
-        return $this->getDb()->createCommand($sql)->queryOne();
+        return $this->getDb()->createCommand($sql)
+            ->cache(null,new DbDependency(['sql' => 'select max(id) from activity;']))
+            ->queryOne();
     }
 
     // queryScalar возвращает первый столбец первой записи
     public function countNotificationActivity()
     {
         $sql = 'select count(id) from activity where use_notification = 1';
-        return $this->getDb()->createCommand($sql)->queryScalar();
+//        TagDependency::invalidate(\Yii::$app->cache,'tag_cache');
+        return $this->getDb()->createCommand($sql)->cache(null,
+            new TagDependency(['tags' => 'tag_cache']))->queryScalar();
     }
 
     // запрос с inner join и сортировкой через построитель запросов
@@ -56,10 +62,11 @@ class DaoComponent extends Component
 //            ->andWhere(new InCondition('user_id', 'in',[]))
             ->andWhere('a.date_created<=:date',
                 [
-                    ':date' => date('Y-m-d H:m:s')
+                    ':date' => date('Y-m-d H:m')
                 ])
             ->orderBy(['a.id' => SORT_DESC])
             ->limit(10)
+            ->cache(50)
             ->all(); // чтобы получить собранный sql-запрос вместо all() - createCommand->sql;
     }
 
@@ -76,22 +83,22 @@ class DaoComponent extends Component
         // транзакция - выполнение сразу нескольких запросов
         $trans = $this->getDb()->beginTransaction();
         try {
-            $this->getDb()->createCommand()->insert('activity', [
-                'title' => 'Новая активность',
-                'dateAct' => '20-02-2019',
-                'timeStart' => '14-50',
-                'description' => 'Описание новой активности',
-                'user_id' => 1,
-            ])->execute();
-            $this->getDb()->createCommand()->insert('activity', [
-                'title' => 'Новая активность 2',
-                'dateAct' => '20-03-2019',
-                'timeStart' => '14-50',
-                'description' => 'Описание новой активности 2',
-                'user_id' => 1,
-            ])->execute();
+//            $this->getDb()->createCommand()->insert('activity', [
+//                'title' => 'Новая активность',
+//                'dateAct' => '20-02-2019',
+//                'timeStart' => '14-50',
+//                'description' => 'Описание новой активности',
+//                'user_id' => 1,
+//            ])->execute();
+//            $this->getDb()->createCommand()->insert('activity', [
+//                'title' => 'Новая активность 2',
+//                'dateAct' => '20-03-2019',
+//                'timeStart' => '14-50',
+//                'description' => 'Описание новой активности 2',
+//                'user_id' => 1,
+//            ])->execute();
 
-            $trans->commit();
+            $trans->rollBack();
         } catch (\Exception $e) {
             \Yii::getLogger()->log($e->getMessage(), Logger::LEVEL_ERROR);
             $trans->rollBack();
@@ -110,18 +117,18 @@ class DaoComponent extends Component
      */
     public function insertActivity($activity)
     {
-        $this->getDb()->createCommand()->insert('activity',
-            [
-                'title' => $activity->title,
-                'dateAct' => $activity->dateAct,
-                'timeStart' => $activity->timeStart,
-                'timeEnd' => $activity->timeEnd,
-                'use_notification' => $activity->use_notification,
-                'description' => $activity->description,
-                'is_blocked' => $activity->is_blocked,
-                'is_repeated' => $activity->is_repeated,
-                'user_id' => 1 // пока не реализован механизм авторизации id пользователя равен 1
-            ])->execute();
+//        $this->getDb()->createCommand()->insert('activity',
+//            [
+//                'title' => $activity->title,
+//                'dateAct' => $activity->dateAct,
+//                'timeStart' => $activity->timeStart,
+//                'timeEnd' => $activity->timeEnd,
+//                'use_notification' => $activity->use_notification,
+//                'description' => $activity->description,
+//                'is_blocked' => $activity->is_blocked,
+//                'is_repeated' => $activity->is_repeated,
+//                'user_id' => 1 // пока не реализован механизм авторизации id пользователя равен 1
+//            ])->execute();
     }
 
     // получить запись из таблицы activity по id
